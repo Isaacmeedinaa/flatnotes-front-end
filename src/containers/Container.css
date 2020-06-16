@@ -1,0 +1,17 @@
+.new-note-btn {
+    width: 120px;
+    height: 35px;
+    margin-top: 25px;
+    border-radius: 0.4rem;
+    border: none;
+    background-color: #E20A6F;
+    color: #ffffff;
+}
+
+.new-note-btn:hover {
+    background-color: #ca0662;
+}
+
+.new-note-btn:focus {
+    outline: none;
+}
