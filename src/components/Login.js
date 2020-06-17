@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import { loginSuccess } from '../actions/userActions'
+import { getUserNotes } from '../actions/noteActions'
 import './Component.css'
 
 export class Login extends Component {
@@ -9,8 +12,7 @@ export class Login extends Component {
 
         this.state = {
             username: '',
-            showAlert: false,
-            userId: undefined
+            showAlert: false
         }
     }
  
@@ -22,12 +24,12 @@ export class Login extends Component {
 
     handleLoginSubmit = (event) => {
         event.preventDefault()
-
+        
         const loginData = {
             username: this.state.username
         }
 
-        const configObj = {
+        const reqObj = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,26 +38,21 @@ export class Login extends Component {
             body: JSON.stringify(loginData)
         }
 
-        fetch('http://localhost:4000/login', configObj)
-            .then(resp => resp.json())
-            .then(resp => {
-                if (resp.status !== 401) {
-                    this.setState({
-                        userId: resp.id
-                    })
-                    this.props.getUserId(this.state.userId)
-                    this.props.history.push({
-                        pathname: '/notes',
-                        state: { userId: this.state.userId }
-                    })
-                } else {
-                    let loginCard = document.getElementById('loginCard')
-                    loginCard.style.height = '450px'
-                    this.setState({
-                        showAlert: true,
-                    })
-                }
-            })
+        fetch('http://localhost:4000/login', reqObj)
+        .then(resp => resp.json())
+        .then(user => {
+            if (user.status !== 401) {
+                this.props.loginSuccess(user)
+                this.props.getUserNotes(user.notes)
+                this.props.history.push('/notes')
+            } else {
+                let loginCard = document.getElementById('loginCard')
+                loginCard.style.height = '450px'
+                this.setState({
+                    showAlert: true,
+                })
+            }
+        })
 
         this.setState({
             username: ''
@@ -88,4 +85,11 @@ export class Login extends Component {
     }
 }
 
-export default Login
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loginSuccess: (user) => dispatch(loginSuccess(user)),
+        getUserNotes: (userNotes) => dispatch(getUserNotes(userNotes))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Login)

@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createNote } from '../actions/noteActions'
-import './Component.css'
+import { editNote } from '../actions/noteActions'
 
-export class NoteForm extends Component {
+export class EditNote extends Component {
 
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
 
         this.state = {
-            title: '',
-            content: ''
+            title: props.location.state.note.title,
+            content: props.location.state.note.content
         }
     }
 
@@ -18,44 +17,42 @@ export class NoteForm extends Component {
         this.props.history.goBack()
     }
 
-    handleNewNoteChange = (event) => {
+    handleEditNoteChange = (event) => {
         this.setState({
             [event.target.name]: event.target.value
         })
     }
 
-    handleNewNoteSubmit = (event) => {
+    handleEditNoteSubmit = (event) => {
         event.preventDefault()
 
-        const newNoteData = {
+        const noteData = {
             title: this.state.title,
             content: this.state.content,
             user_id: this.props.user.id
         }
 
         const reqObj = {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Accepts': 'application/json'
             },
-            body: JSON.stringify(newNoteData)
+            body: JSON.stringify(noteData)
         }
 
-        fetch('http://localhost:4000/notes', reqObj)
+        fetch(`http://localhost:4000/notes/${this.props.location.state.note.id}`, reqObj)
         .then(resp => resp.json())
         .then(note => {
-            this.props.createNote(note)
+            console.log(note)
+            this.props.editNote(note)
             this.props.history.push('/notes')
         })
 
-        this.setState({
-            title: '',
-            content: ''
-        })
     }
 
     render() {
+        console.log(this.props)
         return (
             <div className='container h-100'>
                 <div className='row align-items-center h-100'>
@@ -64,18 +61,18 @@ export class NoteForm extends Component {
                             <button className='back-btn' onClick={this.handleGoBackClick}>Go Back</button>
                         </div>
                         <div className='note note-form-card'>
-                            <h2>New Note 📝</h2>
-                            <p className='card-subtitle'>Go ahead and post in your new note 😉</p>
-                            <form onSubmit={this.handleNewNoteSubmit}>
+                            <h2>Edit Note 📝</h2>
+                            <p className='card-subtitle'>Go ahead and edit your note 😉</p>
+                            <form onSubmit={this.handleEditNoteSubmit}>
                                 <label className='note-form-input-label'>Title:</label>
                                 <br />
-                                <input className='note-form-input-textbox' type='text' name='title' placeholder='Note Title' value={this.state.title} onChange={this.handleNewNoteChange} required />
+                                <input className='note-form-input-textbox' type='text' name='title' placeholder='Note Title' value={this.state.title} onChange={this.handleEditNoteChange} required />
                                 <br />
                                 <label className='note-form-input-label'>Note:</label>
                                 <br />
-                                <textarea className='note-form-input-textbox' id='noteFormTextboxNoteContent' type='text' name='content' placeholder='Note Content' value={this.state.content} onChange={this.handleNewNoteChange} required />
+                                <textarea className='note-form-input-textbox' id='noteFormTextboxNoteContent' type='text' name='content' placeholder='Note Content' value={this.state.content} onChange={this.handleEditNoteChange} required />
                                 <br />
-                                <input className='note-form-input-btn' type='submit' value='Post Note  🙌' />
+                                <input className='note-form-input-btn' type='submit' value='Update Note  🙌' />
                             </form>
                         </div>
                     </div>
@@ -93,8 +90,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createNote: (note) => dispatch(createNote(note))
+        editNote: (note) => dispatch(editNote(note))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoteForm)
+export default connect(mapStateToProps, mapDispatchToProps)(EditNote)
