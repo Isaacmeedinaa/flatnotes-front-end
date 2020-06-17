@@ -180,3 +180,27 @@
 .note-form-input-btn:focus {
     outline: none;
 }
+
+.btn-container {
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+.back-btn {
+    width: 120px;
+    height: 35px;
+    margin-top: 25px;
+    border-radius: 0.4rem;
+    border: none;
+    background-color: #E20A6F;
+    color: #ffffff;
+}
+
+.back-btn:hover {
+    background-color: #ca0662;
+}
+
+.back-btn:focus {
+    outline: none;
+}

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
+import { registerSuccess } from '../actions/userActions'
+import './Component.css'
 
 export class Register extends Component {
 
@@ -10,8 +13,7 @@ export class Register extends Component {
             first_name: '',
             last_name: '',
             username: '',
-            showAlert: false,
-            userId: undefined
+            showAlert: false
         }
     }
 
@@ -27,10 +29,10 @@ export class Register extends Component {
         const registerData = {
             first_name: this.state.first_name,
             last_name: this.state.last_name,
-            username: this.state.username,
+            username: this.state.username
         }
-        
-        const configObj = {
+
+        const reqObj = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,26 +41,20 @@ export class Register extends Component {
             body: JSON.stringify(registerData)
         }
 
-        fetch('http://localhost:4000/users', configObj)
-            .then(resp => resp.json())
-            .then(resp => {
-                if (resp.status !== 401) {
-                    this.setState({
-                        userId: resp.id
-                    })
-                    this.props.getUserId(this.state.userId)
-                    this.props.history.push({
-                        pathname: '/notes',
-                        state: { userId: this.state.userId }
-                    })
-                } else {
-                    let registerCard = document.getElementById('registerCard')
-                    registerCard.style.height = '630px'
-                    this.setState({
-                        showAlert: true,
-                    })
-                }
-            })
+        fetch('http://localhost:4000/register', reqObj)
+        .then(resp => resp.json())
+        .then(user => {
+            if (user.status !== 401) {
+                this.props.registerSuccess(user)
+                this.props.history.push('/notes')
+            } else {
+                let registerCard = document.getElementById('registerCard')
+                registerCard.style.height = '630px'
+                this.setState({
+                    showAlert: true,
+                })
+            }
+        })
 
         this.setState({
             first_name: '',
@@ -101,4 +97,10 @@ export class Register extends Component {
     }
 }
 
-export default Register
+const mapDispatchToProps = (dispatch) => {
+    return {
+        registerSuccess: (user) => dispatch(registerSuccess(user))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Register)

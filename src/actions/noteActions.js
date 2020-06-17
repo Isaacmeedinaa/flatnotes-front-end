@@ -1,19 +1,21 @@
-export const fetchNotes = (userId) => {
-    return (dispatch) => {
-        dispatch({ type: 'LOADING_NOTES' })
-        fetch('http://localhost:4000/notes')
-            .then(resp => resp.json())
-            .then(notes => {
-                let userNotes = notes.filter(note => note.user.id === userId)
-                dispatch({ type: 'ADD_NOTES', notes: userNotes })
-            })
+export const getUserNotes = (userNotes) => {
+    return {
+        type: 'GET_USER_NOTES',
+        userNotes
     }
 }
 
-export const createNote = (newNote) => {
+export const createNote = (note) => {
     return {
         type: 'CREATE_NOTE',
-        newNote
+        note
+    }
+}
+
+export const editNote = (note) => {
+    return {
+        type: 'EDIT_NOTE',
+        note
     }
 }
 
