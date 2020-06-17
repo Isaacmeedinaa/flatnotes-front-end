@@ -14,6 +14,12 @@ export class NoteForm extends Component {
         }
     }
 
+    componentDidMount() {
+        if (!this.props.user) {
+            this.props.history.push('/login')
+        }
+    }
+
     handleGoBackClick = () => {
         this.props.history.goBack()
     }

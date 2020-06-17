@@ -6,6 +6,12 @@ import { logoutSuccess } from '../actions/userActions'
 
 export class NotesContainer extends Component {
 
+    componentDidMount() {
+        if (!this.props.user) {
+            this.props.history.push('/login')
+        }
+    }
+
     renderNotes = () => {
         return this.props.notes.map(note => <Note note={note} key={note.id} />)
     }
@@ -20,6 +26,7 @@ export class NotesContainer extends Component {
     }
 
     render() {
+        console.log(this.props.user)
         return (
             <div className='container h-100'>
                 <div className='row align-items-center h-100'>
@@ -38,6 +45,7 @@ export class NotesContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.user,
         notes: state.notes
     }
 }

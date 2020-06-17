@@ -4,6 +4,12 @@ import { deleteNote } from '../actions/noteActions'
 
 export class ShowNote extends Component {
 
+    componentDidMount() {
+        if (!this.props.user) {
+            this.props.history.push('/login')
+        }
+    }
+
     handleGoBackClick = () => {
         this.props.history.goBack()
     }
@@ -51,10 +57,16 @@ export class ShowNote extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteNote: (noteId) => dispatch(deleteNote(noteId))
     }
 }
 
-export default connect(null, mapDispatchToProps)(ShowNote)
+export default connect(mapStateToProps, mapDispatchToProps)(ShowNote)
