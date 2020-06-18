@@ -29,3 +29,29 @@
 #logOutBtn {
     margin-left: 10px;
 }
+
+.note-container-dropdown {
+    margin-top: 25px;
+}
+
+.dropdown-btn {
+    background-color: #E20A6F;
+    border: none;
+    border-radius: 0.4rem;
+}
+
+.dropdown-btn:hover {
+    background-color: #ca0662;
+}
+
+.dropdown-btn:focus {
+    background-color: #ca0662;
+}
+
+.show>.btn-secondary.dropdown-toggle {
+    background-color: #ca0662;
+    border: none;
+}
+
+.dropdown-link {
+}
