@@ -38,7 +38,7 @@ export class Login extends Component {
             body: JSON.stringify(loginData)
         }
 
-        fetch('http://localhost:4000/login', reqObj)
+        fetch('https://flatnotes-back-end.herokuapp.com/login', reqObj)
         .then(resp => resp.json())
         .then(user => {
             if (user.status !== 401) {

@@ -25,3 +25,10 @@ export const deleteNote = (noteId) => {
         noteId
     }
 }
+
+export const sortNotesAlphabetical = (notes) => {
+    return {
+        type: 'SORT_NOTES_ALPHABETICAL',
+        notes
+    }
+}

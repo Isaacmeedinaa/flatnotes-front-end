@@ -47,7 +47,7 @@ export class EditNote extends Component {
             body: JSON.stringify(noteData)
         }
 
-        fetch(`http://localhost:4000/notes/${this.props.location.state.note.id}`, reqObj)
+        fetch(`https://flatnotes-back-end.herokuapp.com/notes/${this.props.location.state.note.id}`, reqObj)
         .then(resp => resp.json())
         .then(note => {
             console.log(note)

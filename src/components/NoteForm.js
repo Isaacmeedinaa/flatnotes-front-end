@@ -48,7 +48,7 @@ export class NoteForm extends Component {
             body: JSON.stringify(newNoteData)
         }
 
-        fetch('http://localhost:4000/notes', reqObj)
+        fetch('https://flatnotes-back-end.herokuapp.com/notes', reqObj)
         .then(resp => resp.json())
         .then(note => {
             this.props.createNote(note)
