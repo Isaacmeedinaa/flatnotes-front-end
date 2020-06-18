@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { registerSuccess } from '../actions/userActions'
+import { getUserNotes } from '../actions/noteActions'
 import './Component.css'
 
 export class Register extends Component {
@@ -41,11 +42,12 @@ export class Register extends Component {
             body: JSON.stringify(registerData)
         }
 
-        fetch('http://localhost:4000/register', reqObj)
+        fetch('https://flatnotes-back-end.herokuapp.com/register', reqObj)
         .then(resp => resp.json())
         .then(user => {
             if (user.status !== 401) {
                 this.props.registerSuccess(user)
+                this.props.getUserNotes(user.notes)
                 this.props.history.push('/notes')
             } else {
                 let registerCard = document.getElementById('registerCard')
@@ -99,7 +101,8 @@ export class Register extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        registerSuccess: (user) => dispatch(registerSuccess(user))
+        registerSuccess: (user) => dispatch(registerSuccess(user)),
+        getUserNotes: (userNotes) => dispatch(getUserNotes(userNotes))
     }
 }
 

@@ -26,7 +26,7 @@ export class ShowNote extends Component {
             method: 'DELETE'
         }
 
-        fetch(`http://localhost:4000/notes/${noteId}`, reqObj)
+        fetch(`https://flatnotes-back-end.herokuapp.com/notes/${noteId}`, reqObj)
         .then(resp => resp.json())
         .then(note => {
             this.props.deleteNote(noteId)
